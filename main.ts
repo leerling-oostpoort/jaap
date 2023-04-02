@@ -1,22 +1,3 @@
-function nextLed () {
-    if (led_state == 0) {
-        basic.clearScreen()
-    } else if (led_state == 2) {
-        dot.showImage(0)
-    } else if (led_state == 3) {
-        images.iconImage(IconNames.SmallHeart).showImage(0)
-    } else if (led_state == 4) {
-        images.iconImage(IconNames.Heart).showImage(0)
-    } else if (led_state == 7) {
-        images.iconImage(IconNames.SmallHeart).showImage(0)
-    } else if (led_state == 8) {
-        dot.showImage(0)
-    }
-    led_state += 1
-    if (led_state > 8) {
-        led_state = 0
-    }
-}
 function sendBar () {
     basic.showIcon(IconNames.No)
     radio.sendString("Bar")
@@ -60,7 +41,7 @@ function showInit () {
     }
 }
 function showPower () {
-    basic.showString("" + (power))
+    basic.showString("" + power)
 }
 input.onButtonPressed(Button.AB, function () {
     state += 1
@@ -96,7 +77,26 @@ input.onButtonPressed(Button.B, function () {
     }
 })
 function showFib () {
-    basic.showString("" + (fib))
+    basic.showString("" + fib)
+}
+function animateHeart () {
+    if (led_state == 0) {
+        basic.clearScreen()
+    } else if (led_state == 2) {
+        dot.showImage(0)
+    } else if (led_state == 3) {
+        images.iconImage(IconNames.SmallHeart).showImage(0)
+    } else if (led_state == 4) {
+        images.iconImage(IconNames.Heart).showImage(0)
+    } else if (led_state == 7) {
+        images.iconImage(IconNames.SmallHeart).showImage(0)
+    } else if (led_state == 8) {
+        dot.showImage(0)
+    }
+    led_state += 1
+    if (led_state > 8) {
+        led_state = 0
+    }
 }
 function sendFoo () {
     basic.showIcon(IconNames.No)
@@ -139,7 +139,7 @@ showInit()
 loops.everyInterval(100, function () {
     if (!(busy)) {
         if (state == 0) {
-            nextLed()
+            animateHeart()
         } else if (state == 1) {
             showFib()
         } else if (state == 2) {
