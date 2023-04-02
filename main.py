@@ -14,7 +14,7 @@ def on_button_pressed_a():
     elif state == 1:
         prevFib()
     elif state == 2:
-        prevPower()
+        nextFib()
 input.on_button_pressed(Button.A, on_button_pressed_a)
 
 def nextPower():
@@ -39,7 +39,7 @@ def showInit():
                         . . . . .
         """)
 def showPower():
-    basic.show_string("" + str(power))
+    basic.show_string("" + str((power)))
 
 def on_button_pressed_ab():
     global state
@@ -78,7 +78,7 @@ def on_button_pressed_b():
 input.on_button_pressed(Button.B, on_button_pressed_b)
 
 def showFib():
-    basic.show_string("" + str(fib))
+    basic.show_string("" + str((fib)))
 def animateHeart():
     global led_state
     if led_state == 0:
