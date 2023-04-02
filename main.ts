@@ -32,8 +32,13 @@ input.onButtonPressed(Button.A, function () {
         sendFoo()
     } else if (state == 1) {
         prevFib()
+    } else if (state == 2) {
+        prevPower()
     }
 })
+function nextPower () {
+    power = power * 2
+}
 function showInit () {
     basic.showIcon(IconNames.Happy)
     basic.pause(2000)
@@ -53,6 +58,9 @@ function showInit () {
             . . . . .
             `)
     }
+}
+function showPower () {
+    basic.showString("" + (power))
 }
 input.onButtonPressed(Button.AB, function () {
     state += 1
@@ -83,6 +91,8 @@ input.onButtonPressed(Button.B, function () {
         sendBar()
     } else if (state == 1) {
         nextFib()
+    } else if (state == 2) {
+        nextPower()
     }
 })
 function showFib () {
@@ -98,20 +108,25 @@ function nextFib () {
     fib = fib + fibn
     fibn = tmp
 }
+function prevPower () {
+    power = power / 2
+}
 let tmp = 0
 let busy = false
 let dot: Image = null
+let power = 0
 let fibn = 0
 let fib = 0
 let led_state = 0
 let state = 0
 let states = 0
 radio.setGroup(255)
-states = 2
+states = 3
 state = 0
 led_state = 0
 fib = 1
 fibn = 0
+power = 1
 dot = images.createImage(`
     . . . . .
     . . . . .
@@ -127,6 +142,8 @@ loops.everyInterval(100, function () {
             nextLed()
         } else if (state == 1) {
             showFib()
+        } else if (state == 2) {
+            showPower()
         }
     }
 })
