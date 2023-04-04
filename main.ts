@@ -19,19 +19,21 @@
  * 
  * - Add: add two last number on stack
  * 
- * - Subtract: subtract last number from second to last number on stack
+ * - Sub: subtract last number from second to last number on stack
  * 
- * - Multiply: multiply two last numbers on stack
+ * - Mul: multiply two last numbers on stack
  * 
- * - Divide: divide second to last number by last number on stack
+ * - Div: divide second to last number by last number on stack
  * 
- * - Square: square the last number on the stack
+ * - Sqr: square the last number on the stack
  * 
  * - Root: take root of last number on the stack
  * 
- * - Power: raise second to last number to the power of the last number on the stack
+ * - Pwr: raise second to last number to the power of the last number on the stack
  * 
  * - Sum: add all numbers on stack together and clear the stack
+ * 
+ * - Dup: duplicate last entry on stack
  * 
  * - Swap: swap last to number on stack
  * 
@@ -95,8 +97,10 @@ function doOp () {
     } else if (op_index == 8) {
         doSwap()
     } else if (op_index == 9) {
-        doDrop()
+        doDup()
     } else if (op_index == 10) {
+        doDrop()
+    } else if (op_index == 11) {
         doClear()
     }
 }
@@ -263,9 +267,16 @@ function init () {
         . . # . .
         `),
     images.createImage(`
+        . . # # #
+        # # # . #
+        # . # . #
+        # . # # #
+        # # # . .
+        `),
+    images.createImage(`
         . . . . .
         . . . . .
-        . . . . .
+        # . . . #
         . # . # .
         . . # . .
         `),
@@ -342,6 +353,13 @@ function doSum () {
         value2 += stack.pop()
     }
     stack.push(value2)
+}
+function doDup () {
+    if (stack.length >= 1) {
+        stack.push(stack[stack.length - 1])
+    } else {
+        showError()
+    }
 }
 function doAdd () {
     if (stack.length >= 2) {
