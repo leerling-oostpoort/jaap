@@ -1,3 +1,9 @@
+/**
+ * Display numbers on stack or error
+ */
+/**
+ * Stack operations
+ */
 function doDrop () {
     if (stack.length >= 1) {
         stack.pop()
@@ -5,22 +11,6 @@ function doDrop () {
         showError()
     }
 }
-control.onEvent(EventBusSource.MICROBIT_ID_BUTTON_A, EventBusValue.MICROBIT_BUTTON_EVT_UP, function () {
-    if (button_a) {
-        if (button_b) {
-            button_b = 0
-            showStack()
-        } else {
-            button_a = control.eventTimestamp() - button_a
-            if (button_a < 400000) {
-                clickA()
-            } else {
-                pushA()
-            }
-        }
-    }
-    button_a = 0
-})
 function showOp () {
     ops[op_index].showImage(0)
 }
@@ -103,32 +93,28 @@ function doSquare () {
         showError()
     }
 }
-control.onEvent(EventBusSource.MICROBIT_ID_BUTTON_A, EventBusValue.MICROBIT_BUTTON_EVT_DOWN, function () {
-    button_a = control.eventTimestamp()
-})
-function pushA () {
-    if (state) {
-        state = 0
-    } else {
-        state = 1
-    }
-}
-control.onEvent(EventBusSource.MICROBIT_ID_BUTTON_B, EventBusValue.MICROBIT_BUTTON_EVT_UP, function () {
-    if (button_b) {
-        if (button_a) {
-            button_a = 0
+control.onEvent(EventBusSource.MICROBIT_ID_BUTTON_A, EventBusValue.MICROBIT_BUTTON_EVT_UP, function () {
+    if (button_a) {
+        if (button_b) {
+            button_b = 0
             showStack()
         } else {
-            button_b = control.eventTimestamp() - button_b
-            if (button_b < 400000) {
-                clickB()
+            button_a = control.eventTimestamp() - button_a
+            if (button_a < 400000) {
+                clickA()
             } else {
-                pushB()
+                pushA()
             }
         }
     }
-    button_b = 0
+    button_a = 0
 })
+function pushA () {
+    state = 1
+}
+/**
+ * Display loop: diplaying either current number entry or current operator selection
+ */
 function showNum () {
     if (num_init) {
         basic.showNumber(num)
@@ -156,9 +142,11 @@ function showInit () {
             `)
     }
 }
-control.onEvent(EventBusSource.MICROBIT_ID_BUTTON_B, EventBusValue.MICROBIT_BUTTON_EVT_DOWN, function () {
-    button_b = control.eventTimestamp()
-})
+/**
+ * Start of program
+ * 
+ * Initialize and show startup sequence
+ */
 function init () {
     states = 2
     state = 0
@@ -265,6 +253,9 @@ function nextNum () {
 function doClear () {
     stack = []
 }
+control.onEvent(EventBusSource.MICROBIT_ID_BUTTON_B, EventBusValue.MICROBIT_BUTTON_EVT_DOWN, function () {
+    button_b = control.eventTimestamp()
+})
 function pushB () {
     pushNum()
     if (state == 1) {
@@ -273,6 +264,30 @@ function pushB () {
     }
     showStack()
 }
+/**
+ * Button event handling:
+ * 
+ * Deal with press, long press and double press
+ */
+control.onEvent(EventBusSource.MICROBIT_ID_BUTTON_A, EventBusValue.MICROBIT_BUTTON_EVT_DOWN, function () {
+    button_a = control.eventTimestamp()
+})
+control.onEvent(EventBusSource.MICROBIT_ID_BUTTON_B, EventBusValue.MICROBIT_BUTTON_EVT_UP, function () {
+    if (button_b) {
+        if (button_a) {
+            button_a = 0
+            showStack()
+        } else {
+            button_b = control.eventTimestamp() - button_b
+            if (button_b < 400000) {
+                clickB()
+            } else {
+                pushB()
+            }
+        }
+    }
+    button_b = 0
+})
 function doSum () {
     value2 = 0
     while (stack.length > 0) {
@@ -314,12 +329,17 @@ function doMul () {
         showError()
     }
 }
+/**
+ * Number and operator entry
+ */
 function prevNum () {
     num += -1
     num_init = true
 }
 function showError () {
+    busy = true
     basic.showIcon(IconNames.Sad)
+    busy = false
 }
 function doPower () {
     if (stack.length >= 2) {
@@ -344,14 +364,14 @@ let dot: Image = null
 let states = 0
 let num = 0
 let num_init = false
+let button_b = 0
+let button_a = 0
 let value2 = 0
 let state = 0
 let value22 = 0
 let value1 = 0
 let op_index = 0
 let ops: Image[] = []
-let button_b = 0
-let button_a = 0
 let stack: number[] = []
 init()
 showInit()
