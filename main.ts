@@ -6,14 +6,17 @@ function doDrop () {
     }
 }
 control.onEvent(EventBusSource.MICROBIT_ID_BUTTON_A, EventBusValue.MICROBIT_BUTTON_EVT_UP, function () {
-    if (button_b) {
-        showStack()
-    } else {
-        button_a = control.eventTimestamp() - button_a
-        if (button_a < 400000) {
-            clickA()
+    if (button_a) {
+        if (button_b) {
+            button_b = 0
+            showStack()
         } else {
-            pushA()
+            button_a = control.eventTimestamp() - button_a
+            if (button_a < 400000) {
+                clickA()
+            } else {
+                pushA()
+            }
         }
     }
     button_a = 0
@@ -107,14 +110,17 @@ function pushA () {
     state = 1
 }
 control.onEvent(EventBusSource.MICROBIT_ID_BUTTON_B, EventBusValue.MICROBIT_BUTTON_EVT_UP, function () {
-    if (button_a) {
-        showStack()
-    } else {
-        button_b = control.eventTimestamp() - button_b
-        if (button_b < 400000) {
-            clickB()
+    if (button_b) {
+        if (button_a) {
+            button_a = 0
+            showStack()
         } else {
-            pushB()
+            button_b = control.eventTimestamp() - button_b
+            if (button_b < 400000) {
+                clickB()
+            } else {
+                pushB()
+            }
         }
     }
     button_b = 0
@@ -323,6 +329,8 @@ function doPower () {
 function showStack () {
     busy = true
     for (let value of stack) {
+        basic.clearScreen()
+        basic.pause(100)
         basic.showNumber(value)
     }
     busy = false
@@ -338,8 +346,8 @@ let value2 = 0
 let value1 = 0
 let op_index = 0
 let ops: Image[] = []
-let button_a = 0
 let button_b = 0
+let button_a = 0
 let stack: number[] = []
 init()
 showInit()
