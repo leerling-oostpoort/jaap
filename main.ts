@@ -1,4 +1,48 @@
 /**
+ * RPN Calculator
+ * 
+ * ---------------------
+ * 
+ * - Modify number entry by clicking buttons
+ * 
+ * - Long press B to push current number onto stack
+ * 
+ * - Long press A to switch to operator selection
+ * 
+ * - Select operator by clicking buttons
+ * 
+ * - Long press B to execute operator on stack
+ * 
+ * - Press A and B simultaneously to show stack
+ * 
+ * Operations:
+ * 
+ * - Add: add two last number on stack
+ * 
+ * - Subtract: subtract last number from second to last number on stack
+ * 
+ * - Multiply: multiply two last numbers on stack
+ * 
+ * - Divide: divide second to last number by last number on stack
+ * 
+ * - Square: square the last number on the stack
+ * 
+ * - Root: take root of last number on the stack
+ * 
+ * - Power: raise second to last number to the power of the last number on the stack
+ * 
+ * - Sum: add all numbers on stack together and clear the stack
+ * 
+ * - Swap: swap last to number on stack
+ * 
+ * - Drop: drop the last number on the stack
+ * 
+ * - Clear: clear the stack
+ */
+/**
+ * Number and operator entry
+ */
+/**
  * Display numbers on stack or error
  */
 /**
@@ -110,7 +154,11 @@ control.onEvent(EventBusSource.MICROBIT_ID_BUTTON_A, EventBusValue.MICROBIT_BUTT
     button_a = 0
 })
 function pushA () {
-    state = 1
+    if (state) {
+        state = 0
+    } else {
+        state = 1
+    }
 }
 /**
  * Display loop: diplaying either current number entry or current operator selection
@@ -329,9 +377,6 @@ function doMul () {
         showError()
     }
 }
-/**
- * Number and operator entry
- */
 function prevNum () {
     num += -1
     num_init = true

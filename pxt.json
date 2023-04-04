@@ -1,5 +1,5 @@
 {
-    "name": "jaap",
+    "name": "jaap-calculator",
     "description": "",
     "dependencies": {
         "core": "*",
